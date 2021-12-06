@@ -21,6 +21,7 @@ plink2/plink2 \
   --king-cutoff 0.177 \
   --out ukb23155_cALL_b0_v1-merge_king
 ## merge sample ids which were not satisfying each filtering cutoff. -> kb23155_cALL_b0_v1-merge_sexcheck_het_king.bad_fid.txt
+
 # filtering by sex/heterogenity/kinship 
 plink-1.9/plink \
   --bfile ukb23155_cALL_b0_v1 \
