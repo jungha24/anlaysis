@@ -8,6 +8,16 @@
 - takes: one or more single-sample GVCFs
 - imports: data over at least one genomics interval
 - outputs: a directory containing a GenomicsDB dataset -> this would be used as input for *GenotypeGVCFs*.
+- requirements:
+  * gvcf files and tabix index files should be in a same folder.
+  * mkdir temp
+  * there should be no existing genomicsdb workspace directory. do not make it previously
+  * sample_map file
+  ~~~
+  sample1   /path/to/sample1/gvcf/file
+  sample2   /path/to/sample2/gvcf/file
+  ~~~
+  
 ~~~bashscript
 gatk GenomicsDBImport \
   --jave-options "-Xmx100g" GenomicsDBImport \
