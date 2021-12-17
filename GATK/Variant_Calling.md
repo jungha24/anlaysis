@@ -20,10 +20,10 @@
   
 ~~~bashscript
 gatk GenomicsDBImport \
-  --jave-options "-Xmx100g" GenomicsDBImport \
+  --jave-options "-Xmx100g -Xms100g" GenomicsDBImport \
   --sample-name-map covid_wgs_gvcf.sample_map
   --genomicsdb-workspace-path covid_wgs_gvcf_chr
   --intervals chr1
   --tmp-dir=temp
-  ~~~
+~~~
  
