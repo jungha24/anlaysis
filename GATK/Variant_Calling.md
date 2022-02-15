@@ -61,3 +61,6 @@ java -jar /ssd-data/workspace/support/tool/picard_2.25.0/picard.jar GatherVcfs I
 ~~~
 
 #### 3. Filter variants by variant (quality score) recalibration
+- filter the raw variant callset is to use variant quality score recalibration (VQSR), which uses machine learning to identify annotation profiles of variants that are likely to be real, and assigns a VQSLOD score to each variant that is much more reliable than the QUAL score calculated by the caller.
+- step 1, the program builds a model based on training variants, then applies that model to the data to assign a well-calibrated probability to each variant call.
+- step 2, use this variant quality score to filter the raw call set, thus producing a subset of calls with our desired level of quality, fine-tuned to balance specificity and sensitivity.
