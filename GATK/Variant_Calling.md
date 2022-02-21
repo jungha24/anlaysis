@@ -62,5 +62,65 @@ java -jar /ssd-data/workspace/support/tool/picard_2.25.0/picard.jar GatherVcfs I
 
 #### 3. Filter variants by variant (quality score) recalibration
 - filter the raw variant callset is to use variant quality score recalibration (VQSR), which uses machine learning to identify annotation profiles of variants that are likely to be real, and assigns a VQSLOD score to each variant that is much more reliable than the QUAL score calculated by the caller.
-- step 1, the program builds a model based on training variants, then applies that model to the data to assign a well-calibrated probability to each variant call.
-- step 2, use this variant quality score to filter the raw call set, thus producing a subset of calls with our desired level of quality, fine-tuned to balance specificity and sensitivity.
+- step 1, (**VariantRecalibrator**) the program builds a model based on training variants, then applies that model to the data to assign a well-calibrated probability to each variant call.
+- step 2, (**ApplyVQSR**) use this variant quality score to filter the raw call set, thus producing a subset of calls with our desired level of quality, fine-tuned to balance specificity and sensitivity.
+- https://gatk.broadinstitute.org/hc/en-us/articles/360035531112--How-to-Filter-variants-either-with-VQSR-or-by-hard-filtering
+~~~bashscript
+#generate index file of vcf
+/ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk IndexFeatureFile -I merge.vcf.gz
+
+#Hard-filter a large cohort callset on ExcessHet using "VariantFiltration"
+/ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk --java-options "-Xmx100g" VariantFiltration -V merge.vcf.gz --filter-expression "ExcessHet > 54.69" --filter-name ExcessHet -O merge_excesshet.vcf.gz
+
+#Create sites-only vcf with "MakeSitesOnlyVcf"
+/ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk MakeSitesOnlyVcf -I merge_excesshet.vcf.gz -O merge_sitesonly.vcf.gz
+
+#calculate VQSLOD tranches for indels using "VariantRecalibrator"
+/ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk --java-options "-Xmx100g -Xms24g" VariantRecalibrator \
+ -V merge_sitesonly.vcf.gz \
+ --trust-all-polymorphic \
+ -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.5 -tranche 99.0 -tranche 97.0 -tranche 96.0 -tranche 95.0 -tranche 94.0 -tranche 93.5 -tranche 93.0 -tranche 92.0 -tranche 91.0 -tranche 90.0 \
+ -an FS -an ReadPosRankSum -an MQRankSum -an QD -an SOR -an DP\
+ -mode INDEL \
+ --max-gaussians 4 \
+ -resource:mills,known=false,training=true,truth=true,prior=12 /ssd-data/workspace/support/annotation/gca_broad_ref/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz \
+ -resource:axiomPoly,known=false,training=true,truth=false,prior=10 /ssd-data/workspace/support/annotation/gca_broad_ref/Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz \
+ -resource:dbsnp,known=true,training=false,truth=false,prior=2 /ssd-data/workspace/support/annotation/gca_broad_ref/Homo_sapiens_assembly38.dbsnp138.vcf \
+ -O cohort_indels.recal \
+ --tranches-file merge_indels.tranches
+ 
+ #caculate VQSLOD tranches for SNPs using "VariantRecalibrator"
+ /ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk --java-options "-Xmx100g -Xms24g" VariantRecalibrator \
+  -V merge_sitesonly.vcf.gz \
+  --trust-all-polymorphic \
+  -tranche 100.0 -tranche 99.95 -tranche 99.9 -tranche 99.8 -tranche 99.6 -tranche 99.5 -tranche 99.4 -tranche 99.3 -tranche 99.0 -tranche 98.0 -tranche 97.0 -tranche 90.0 \
+  -an QD -an MQRankSum -an ReadPosRankSum -an FS -an MQ -an SOR -an DP \
+  -mode SNP \
+  --max-gaussians 6 \
+  -resource:hapmap,known=false,training=true,truth=true,prior=15 /ssd-data/workspace/support/annotation/gca_broad_ref/hapmap_3.3.hg38.vcf.gz \
+  -resource:omni,known=false,training=true,truth=true,prior=12 /ssd-data/workspace/support/annotation/gca_broad_ref/1000G_omni2.5.hg38.vcf.gz \
+  -resource:1000G,known=false,training=true,truth=false,prior=10 /ssd-data/workspace/support/annotation/gca_broad_ref/1000G_phase1.snps.high_confidence.hg38.vcf.gz \
+  -resource:dbsnp,known=true,training=false,truth=false,prior=7 /ssd-data/workspace/support/annotation/gca_broad_ref/Homo_sapiens_assembly38.dbsnp138.vcf \
+  -O cohort_snps.recal \
+  --tranches-file merge_snps.tranches
+  
+ #filter indels on VQSLOD using "ApplyVQSR"
+ /ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk --java-options "-Xmx100g -Xms24g" ApplyVQSR \
+  -V merge_excesshet.vcf.gz \
+  --recal-file cohort_indels.recal \
+  --tranches-file merge_indels.tranches \
+  --truth-sensitivity-filter-level 99.7 \
+  --create-output-variant-index true \
+  -mode INDEL \
+  -O indel.recalibrated.vcf.gz
+  
+ #filter SNPs on VQSLOD using "ApplyVQSR"
+ /ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk --java-options "-Xmx100g -Xms24g" ApplyVQSR \
+  -V indel.recalibrated.vcf.gz \
+  --recal-file cohort_snps.recal \
+  --tranches-file merge_snps.tranches \
+  --truth-sensitivity-filter-level 99.7 \
+  --create-output-variant-index true \
+  -mode SNP \
+  -O snp.recalibrated.vcf.gz
+ ~~~
