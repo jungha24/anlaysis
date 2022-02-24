@@ -1,5 +1,5 @@
 ###start from vcf with VQSR annotation
-- follow filtering critera by refering to 'https://www.cell.com/cell-reports/pdf/S2211-1247(20)30367-3.pdf' 
+#####follow filtering critera by refering to 'https://www.cell.com/cell-reports/pdf/S2211-1247(20)30367-3.pdf' 
 * remain: VQSR PASS variants
 * exclude: low complexity regions 
 * exclude: non-canonical chromosomes
@@ -7,7 +7,7 @@
 * exclude: SNV with AB > 0.78 or AB < 0.22 
 * exclude: indel with AB > 0.8 or AB < 0.2
 * filtering: rm duplicates, biallelic-only, geno 0.05, maf 0.05, hwe p-val 1e-5
-* 
+
 [1] left GATK VQSR PASS variants only
 ~~~bashscript
 bcftools view -f PASS snp.recalibrated.vcf.gz > merged.vqsr.vcf
