@@ -7,7 +7,7 @@
 * exclude: SNV with AB > 0.78 or AB < 0.22 
 * exclude: indel with AB > 0.8 or AB < 0.2
 * filtering: rm duplicates, biallelic-only, geno 0.05, maf 0.05, hwe p-val 1e-5
-
+* filter samples
 [1] left GATK VQSR PASS variants only
 ~~~bashscript
 bcftools view -f PASS snp.recalibrated.vcf.gz > merged.vqsr.vcf
@@ -54,3 +54,7 @@ java -jar /ssd-data/workspace/support/tool/picard_2.25.0/picard.jar MergeVcfs I=
   --hwe 1e-5 \
   --recode vcf bgz --keep-allele-order --out merged.qc2_2
 ~~~
+[7] filter individuals throung peddy
+~~~bashscript
+# generage ped file
+/ssd-data/workspace/support/tool/plink-1.9/plink --vcf merged.qc2_2.vcf.gz --recode --out merged.qc2_2
