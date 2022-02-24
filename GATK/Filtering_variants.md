@@ -1,5 +1,5 @@
-###start from vcf with VQSR annotation
-#####follow filtering critera by refering to 'https://www.cell.com/cell-reports/pdf/S2211-1247(20)30367-3.pdf' 
+### start from vcf with VQSR annotation
+##### follow filtering critera by refering to 'https://www.cell.com/cell-reports/pdf/S2211-1247(20)30367-3.pdf' 
 * remain: VQSR PASS variants
 * exclude: low complexity regions 
 * exclude: non-canonical chromosomes
