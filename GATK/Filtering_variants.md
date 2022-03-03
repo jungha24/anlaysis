@@ -54,7 +54,42 @@ java -jar /ssd-data/workspace/support/tool/picard_2.25.0/picard.jar MergeVcfs I=
   --hwe 1e-5 \
   --recode vcf bgz --keep-allele-order --out merged.qc2_2
 ~~~
-[7] filter individuals throung peddy
+[7] filter individuals throung peddy or manually with plink
+- using peddy
 ~~~bashscript
 # generage ped file
 /ssd-data/workspace/support/tool/plink-1.9/plink --vcf merged.qc2_2.vcf.gz --recode --out merged.qc2_2
+## install peddy
+#conda activate peddy_py3.7
+#conda install -y peddy
+conda activate hail_py3.7
+peddy -p 4 --plot --prefix merged.qc2_2 merged.qc2_2.vcf.gz merged.qc2_2.ped
+~~~
+- using plink
+~~~bashscript
+# sexcheck
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile merged.qc2_2 --check-sex --out merged.qc2_2 #merged.qc2_2.sexcheck
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile merged.qc2_2 --remove-fam remove_checksex.txt --make-bed --out merged.qc3_1
+# missing
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile merged.qc3_1 --mind 0.05 --make-bed --out merged.qc3_2
+# relatedness
+/ssd-data/workspace/support/tool/plink2/plink2 --bfile merged.qc3_2 --king-cutoff 0.177 --out merged.qc3_2 #merged.qc3_2.king.cutoff.out.id, merged.qc3_2.king.cutoff.in.id
+/ssd-data/workspace/support/tool/plink2/plink2 --bfile merged.qc3_2 --make-king-table --out merged.qc3_2
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile merged.qc3_2 --remove-fam merged.qc3_2.king.cutoff.out.id --make-bed --out merged.qc3_3
+# run pca
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile merged.qc3_3 --pca 10 --out merged.qc3_3 #merged.qc3_3.eigenval, merged.qc3_3.eigenvec
+#draw pca with 1000g&kova
+/ssd-data/workspace/support/tool/plink2/plink2 --bfile merged.qc3_3 --ref-from-fa ./reference/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna --recode vcf --out merged.qc3_3
+bgzip -c  merged.qc3_3.vcf >  merged.qc3_3.vcf.gz
+bcftools annotate --rename-chrs chr_name_conv.txt merged.qc3_3.vcf.gz -Oz -o merged.qc3_3.chr.vcf.gz
+  #there was no 'chr'. so i added 'chr' to find out overlapping variant from 1000g_kova vcf
+bcftools isec -p kova2_1000g_covid -Oz 20220303_kova_kg_GSAarray.vcf.bgz merged.qc3_3.chr.vcf.gz
+bcftools merge ./kova2_1000g_covid/0002.vcf.gz ./kova2_1000g_covid/0003.vcf.gz -Oz -o 20220303_kova_kg_GSAarray_merged.qc3_3.chr.vcf.gz
+  # 0002.vcf.gz : records from 20220303_kova_kg_GSAarray.vcf.bgz shared by both
+  # 003.vcf.gz : records from merged.qc3_3.chr.vcf.gz shared by bot
+/ssd-data/workspace/support/tool/plink-1.9/plink --vcf 20220303_kova_kg_GSAarray_merged.qc3_3.chr.vcf.gz --const-fid 0 --make-bed --out 20220303_kova_kg_GSAarray_merged.qc3_3.chr 
+  #'_' in sample name makes error, since plink use '_' as deliminator 
+  #Error: Multiple instances of '_' in sample ID. If you do not want '_' to be treated as a FID/IID delimiter, use --double-id or --const-fid to choose a different method of converting VCF sample IDs to PLINK IDs, or --id-delim to change the FID/IID delimiter.
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile 20220303_kova_kg_GSAarray_merged.qc3_3.chr --pca 10 --out 20220303_kova_kg_GSAarray_merged.qc3_3.chr
+~~~
+
