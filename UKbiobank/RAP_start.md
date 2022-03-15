@@ -1,4 +1,5 @@
 ### RAP (research analysis platform) usage
+#### RAP start
 - https://dnanexus.gitbook.io/uk-biobank-rap/getting-started/platform-overview 
 1. genearate account of RAP
 2. connect the account to UK biobank AMS account
@@ -36,6 +37,4 @@
   ~~~
 4. create a project
   * PROJECTS > New Project > rename project name and enter application ID
- 
-6. 
-  
+
