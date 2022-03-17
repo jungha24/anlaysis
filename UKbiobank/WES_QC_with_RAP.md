@@ -1,6 +1,22 @@
-#### additional QC of pVCF from 200K 
+# additional QC of pVCF from 200K 
 
-##### Run the Cloud Workstation App
+## run single dx run with app 
+
+~~~bashscript
+# upload target region bed file to RAP
+ dx upload /Users/jeongha/Dropbox/JH/2022/ukbiobank/xgen_plus_spikein.GRCh38.bed --destination Rett_20220315:/20220315_input/
+
+# run vcftools with "swiss-army-knife"
+dx run swiss-army-knife \
+  -iin="/Bulk/Exome sequences_Previous exome releases/Population level exome OQFE variants, pVCF format - interim 200k release/ukb23156_c1_b0_v1.vcf.gz" \
+  -iin="/20220315_input/xgen_plus_spikein.GRCh38.bed" \
+  -icmd="vcftools --gzvcf *.vcf.gz --exclude-bed *.bed --recode --recode-INFO-all --stdout| bgzip > ukb23156_c1_b0_v2.tcr.vcf.gz" \
+  --destination Rett_20220315:/20220315_output \
+  -y
+  
+~~~
+
+## Run the Cloud Workstation App
 - to reduce the total number of jobs by processing a batch of N samples in each job
 
 Step1.Configure SSH for your account
@@ -147,23 +163,4 @@ Step 6. test for 1 input file
 dx run pvcf_qc_fail -h
 dx run pvcf_qc_fail -ipvcf="/Bulk/Exome sequences_Previous exome releases/Population level exome OQFE variants, pVCF format - interim 200k release/ukb23156_c1_b0_v1.vcf.gz"
 ~~~
-##### docker
-~~~bashscript
-docker pull biocontainers/vcftools:v0.1.16-1-deb_cv1
-~~~ 
-##### marker QC
-1. leave capture target region only
-~~~bashscript
-# upload target region bed file to RAP
- dx upload /Users/jeongha/Dropbox/JH/2022/ukbiobank/xgen_plus_spikein.GRCh38.bed --destination Rett_20220315:/20220315_input/
 
-# run vcftools with "swiss-army-knife"
-dx run swiss-army-knife \
-  -iin="/Bulk/Exome sequences_Previous exome releases/Population level exome OQFE variants, pVCF format - interim 200k release/ukb23156_c1_b0_v1.vcf.gz" \
-  -iin="/20220315_input/xgen_plus_spikein.GRCh38.bed" \
-  -icmd="vcftools --gzvcf *.vcf.gz --exclude-bed *.bed --recode --recode-INFO-all --stdout| bgzip > ukb23156_c1_b0_v2.tcr.vcf.gz" \
-  --destination Rett_20220315:/20220315_output \
-  -y
-  
- 
-~~~
