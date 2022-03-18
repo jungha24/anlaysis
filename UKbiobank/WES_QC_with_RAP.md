@@ -18,7 +18,7 @@ dx run swiss-army-knife \
 
 ## Run the Cloud Workstation App
 - to reduce the total number of jobs by processing a batch of N samples in each job
-
+### 1. Configure ssh
 Step1.Configure SSH for your account
 ~~~bashscript
 jeongha@jeonghas-MacBook-Pro $ dx ssh_config
@@ -33,13 +33,12 @@ Pick a numbered choice [0]: 1
 Updated public key for user user-jeongcool
 Your account has been configured for use with SSH. Use dx run with the --allow-ssh, --ssh,
 or --debug-on options to launch jobs and connect to them.
-~~~
-Step 2: Run the app
-~~~bashscript
+
 jeongha@jeonghas-MacBook-Pro $ dx select "Rett_20220315"
 Selected project Rett_20220315
 ~~~
-Step 3: launch the cloud_workstation app & packaging tool into a Docker image and uploading to RAP
+### 2. Preparing the Applet
+Step 2: launch the cloud_workstation app & packaging tool into a Docker image and uploading to RAP
 - as soon as this command line is done, job is started and the cloud_workstation prompt appears
 ~~~bashsciprt
 jeongha@jeonghas-MacBook-Pro $ dx run cloud_workstation --ssh
@@ -113,44 +112,9 @@ dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker save pvcf_qc_fail:0.1| gzip
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p pvcf_qc_faill_0.1.tar.gz --path Rett_20220315:/Docker/pvcf_qc_fail/pvcf_qc_fail.tar.gz
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p Dockerfile --path Rett_20220315:/Docker/pvcf_qc_fail/Dockerfile
 ~~~
-Step 4. Creating an applet in WDL
-~~~
-#pvcf_qc.wdl 
-version 1.0
+Step 3. Creating an applet in WDL
 
-task pvcf_qc_fail{
-    input {
-        Array[File]+ pvcf
-    }
-
-    command <<<
-        set -x -e -o pipefail
-        mkdir output_220316
-        for input in ~{sep=" " pvcf}; do
-            file_prefix=$( basename $input ".vcf.gz")
-            time java -jar $HOME/picard.jar FilterVcf I=${input} O=${file_prefix}.filtered.vcf.gz MIN_AB=0.15 MIN_DP=7
-            time bcftools query -e'FILTER="PASS" -f'%CHROM %POS %REF %ALT %ID %QUAL %INFO\n' ${file_prefix}.filtered.vcf.gz > ${file_prefix}.fail.txt
-            rm output_220316/*.filtered.vcf.gz
-        done
-    >>>
-    output {
-        Array[File] variant = glob("output_220316/*.fail.txt")
-    }
-    runtime {
-        docker: "dx://Rett_20220315:/Docker/pvcf_qc_fail/pvcf_qc_fail.tar.gz"
-        dx_timeout: "48H"
-        dx_instance_type: "mem1_ssd1_v2_x2"
-    }
-    parameter_meta {
-    pvcf: {
-        description: "chunked pvcf",
-        patterns: ["*.vcf.gz"],
-        stream: true
-    }
-    }
-}
-~~~
-Step5. Compile the WDL task using dxCompiler to a DNAnexus applet
+Step 4. Compile the WDL task using dxCompiler to a DNAnexus applet
 - install dxCompiler.jar (https://github.com/dnanexus/dxCompiler/releases)
 ~~~bashscript
  jeongha@jeonghas-MacBook-Pro $ java -jar /Users/jeongha/software/dxCompiler-2.9.1.jar compile /Users/jeongha/Dropbox/JH/2022/ukbiobank/pvcf_qc.wdl
@@ -158,9 +122,48 @@ Step5. Compile the WDL task using dxCompiler to a DNAnexus applet
 applet-G8jv5k8JFqgXB00Q5Z6KjfBF
 ~~~
 - dxWDLrt AssetBundle and pvcf_qc_fail applet were generated on the Project
-Step 6. test for 1 input file
+
+Step 5. test for 1 input file
 ~~~bashscript
 dx run pvcf_qc_fail -h
-dx run pvcf_qc_fail -ipvcf="/Bulk/Exome sequences_Previous exome releases/Population level exome OQFE variants, pVCF format - interim 200k release/ukb23156_c1_b0_v1.vcf.gz"
+dx run pvcf_qc_fail -ipvcf=file-Fz7JVvjJ7G2Gfp6kJ51Ff492 /
+2022-03-16 20:32:58 pvcf_qc_fail STDERR + docker run -a stdout -a stderr --memory=4194304000 --cidfile /home/dnanexus/meta/containerId --user 0:0 --hostname job-G8jvYB8JFqgqgjf9620qfvjZ --entrypoint /bin/bash -v /home/dnanexus:/home/dnanexus pvcf_qc_fail:0.1 /home/dnanexus/meta/commandScript
+2022-03-16 20:32:58 pvcf_qc_fail STDERR WARNING: Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.
+2022-03-16 20:32:59 pvcf_qc_fail STDERR /home/dnanexus/meta/commandScript: line 9: unexpected EOF while looking for matching `''
+2022-03-16 20:32:59 pvcf_qc_fail STDERR /home/dnanexus/meta/commandScript: line 20: syntax error: unexpected end of file
+2022-03-16 20:32:59 pvcf_qc_fail STDERR +++ cat /home/dnanexus/meta/containerId
+2022-03-16 20:32:59 pvcf_qc_fail STDERR ++ docker wait 7015c0ad15e4830807bd48b844eaf6bafb0427e3af372c14817a3e2790e0d862
+2022-03-16 20:32:59 pvcf_qc_fail STDERR + rc=2
+2022-03-16 20:32:59 pvcf_qc_fail STDERR ++ cat /home/dnanexus/meta/containerId
+2022-03-16 20:32:59 pvcf_qc_fail STDERR + docker rm 7015c0ad15e4830807bd48b844eaf6bafb0427e3af372c14817a3e2790e0d862
+2022-03-16 20:33:00 pvcf_qc_fail STDOUT exit $rc7015c0ad15e4830807bd48b844eaf6bafb0427e3af372c14817a3e2790e0d862
+2022-03-16 20:33:00 pvcf_qc_fail STDERR + exit 2
+2022-03-16 20:33:00 pvcf_qc_fail STDERR [error] failure executing Task action 'run'
+2022-03-16 20:33:00 pvcf_qc_fail STDERR java.io.FileNotFoundException: /home/dnanexus/meta/stderr
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.util.FileUtils$.readFileBytes(FileUtils.scala:186)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.util.FileUtils$.readFileContent(FileUtils.scala:207)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.WorkerJobMeta.runJobScriptFunction(JobMeta.scala:985)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.TaskExecutor.apply(TaskExecutor.scala:991)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.BaseCli.dispatchCommand(BaseCli.scala:86)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.BaseCli.main(BaseCli.scala:137)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp$.delayedEndpoint$dxExecutorWdl$MainApp$1(Main.scala:27)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp$delayedInit$body.apply(Main.scala:26)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.Function0.apply$mcV$sp(Function0.scala:39)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.Function0.apply$mcV$sp$(Function0.scala:39)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.runtime.AbstractFunction0.apply$mcV$sp(AbstractFunction0.scala:17)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.$anonfun$main$1(App.scala:76)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.$anonfun$main$1$adapted(App.scala:76)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.collection.IterableOnceOps.foreach(IterableOnce.scala:563)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.collection.IterableOnceOps.foreach$(IterableOnce.scala:561)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.collection.AbstractIterable.foreach(Iterable.scala:926)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.main(App.scala:76)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.main$(App.scala:74)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp$.main(Main.scala:26)
+2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp.main(Main.scala)
+
 ~~~
+### Generating Job submission script
+Step 6. Efficiently fetch the input file names from RAP
+~~~bashscript
+$ dx find data --folder "/Bulk/Exome sequences_Previous exome releases/Population level exome OQFE variants, pVCF format - interim 200k release" --name "*.vcf.gz" --delim > inputfile.txt
 
