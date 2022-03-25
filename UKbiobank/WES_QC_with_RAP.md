@@ -111,6 +111,12 @@ dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker build -t pvcf_qc_fail:0.1 .
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker save pvcf_qc_fail:0.1| gzip -c > pvcf_qc_faill_0.1.tar.gz
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p pvcf_qc_faill_0.1.tar.gz --path Rett_20220315:/Docker/pvcf_qc_fail/pvcf_qc_fail.tar.gz
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p Dockerfile --path Rett_20220315:/Docker/pvcf_qc_fail/Dockerfile
+
+sudo docker pull quay.io/biocontainers/picard:2.26.10--hdfd78af_0
+sudo docker save quay.io/biocontainers/picard:2.26.10--hdfd78af_0 | gzip -c > quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz
+dx upload -p quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz --path Rett_20220315:/Docker/quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz
+[============>
+
 ~~~
 Step 3. Creating an applet in WDL
 
