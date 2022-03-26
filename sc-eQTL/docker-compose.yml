@@ -1,0 +1,11 @@
+version : '3.1'
+
+services:
+        notebook:
+                image: francois4/tensorqtl
+                container_name : jhl-tensorqtl
+                volumes : 
+                        - /home/mchoilab_dell/dell_drobo/project_jhl/:/mnt/workspace/
+                        - /ssd-data/workspace/support/:/mnt/support/
+                stdin_open : true
+                tty: true
