@@ -172,7 +172,7 @@ dx run /pvcf_qc_fail -ipvcf=file-Fz7JgBQJ055qvYF24kKj9Yj5 -ipvcf=file-Fz7JgBQJZQ
 $ head -1 submission_command.txt |sh
 ~~~
 - this runs serially not parallelly
-- would rather run following command. this makes jobs repectively
+- would rather run following command. this makes respectively jobs which perform the execution serially.
 ~~~bashscript
 dx run /pvcf_qc_fail_pilot -ipvcf=file-Fz7JZ10JXVzZxbjf3kbQkZgQ -ipvcf=file-Fz7JfyjJXVzz3Y9GJ2xy4179 -ipvcf=file-Fz7Jfz8J5J7zG7ZFPf4x4VXz -ipvcf=file-Fz7Jg98JJVy0qq0Y9v6kFyKx -ipvcf=file-Fz7JgY0JvGG5p3VBJJB3fgGy -ipvcf=file-Fz7Jgb0JP03644kYJkx9Bx78 -ipvcf=file-Fz7Jgv0JxBk5JF4BF8j7qvXJ -ipvcf=file-Fz7Jj88JgPxPPf5VFJGGj09g -ipvcf=file-Fz7JjQQJ9jxb9KqgKJZjk5QP -ipvcf=file-Fz7JjYQJPqkV1Qy11vFbJ5Gx  --folder="/pVCF_qc_process/5" --tag 200K_exome_exome_analysis --tag original --tag batch_n_5 --priority normal -y --brief && \
 dx run /pvcf_qc_fail_pilot -ipvcf=file-Fz7JjkjJXVzbYZbF1y68bkXB -ipvcf=file-Fz7Jk7jJZQVy0y652gXxxvfV -ipvcf=file-Fz7JkJ8JZQVV5gJjGbyfgBxJ -ipvcf=file-Fz7JkZjJ5J7Y9jyp64y7QqgJ -ipvcf=file-Fz7Jpg8JZQVb2Fqz4kPZgVxx -ipvcf=file-Fz7JqZjJvGG5fvfj6515X7jG -ipvcf=file-Fz7Jx60Jk6yfF0bQ95b57xg3 -ipvcf=file-Fz7JZqjJf7VyPY8b954zVx37 -ipvcf=file-Fz7JZx0JvGG0qq0Y9v6kFqyg -ipvcf=file-Fz7JZy0J975X21zq6b1xzyQB  --folder="/pVCF_qc_process/6" --tag 200K_exome_exome_analysis --tag original --tag batch_n_6 --priority normal -y --brief && \
