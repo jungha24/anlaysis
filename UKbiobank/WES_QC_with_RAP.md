@@ -136,43 +136,19 @@ Step 5. test for 1 input file
 ~~~bashscript
 dx run pvcf_qc_fail -h
 dx run pvcf_qc_fail -ipvcf=file-Fz7JVvjJ7G2Gfp6kJ51Ff492 /
-2022-03-16 20:32:58 pvcf_qc_fail STDERR + docker run -a stdout -a stderr --memory=4194304000 --cidfile /home/dnanexus/meta/containerId --user 0:0 --hostname job-G8jvYB8JFqgqgjf9620qfvjZ --entrypoint /bin/bash -v /home/dnanexus:/home/dnanexus pvcf_qc_fail:0.1 /home/dnanexus/meta/commandScript
-2022-03-16 20:32:58 pvcf_qc_fail STDERR WARNING: Your kernel does not support swap limit capabilities or the cgroup is not mounted. Memory limited without swap.
-2022-03-16 20:32:59 pvcf_qc_fail STDERR /home/dnanexus/meta/commandScript: line 9: unexpected EOF while looking for matching `''
-2022-03-16 20:32:59 pvcf_qc_fail STDERR /home/dnanexus/meta/commandScript: line 20: syntax error: unexpected end of file
-2022-03-16 20:32:59 pvcf_qc_fail STDERR +++ cat /home/dnanexus/meta/containerId
-2022-03-16 20:32:59 pvcf_qc_fail STDERR ++ docker wait 7015c0ad15e4830807bd48b844eaf6bafb0427e3af372c14817a3e2790e0d862
-2022-03-16 20:32:59 pvcf_qc_fail STDERR + rc=2
-2022-03-16 20:32:59 pvcf_qc_fail STDERR ++ cat /home/dnanexus/meta/containerId
-2022-03-16 20:32:59 pvcf_qc_fail STDERR + docker rm 7015c0ad15e4830807bd48b844eaf6bafb0427e3af372c14817a3e2790e0d862
-2022-03-16 20:33:00 pvcf_qc_fail STDOUT exit $rc7015c0ad15e4830807bd48b844eaf6bafb0427e3af372c14817a3e2790e0d862
-2022-03-16 20:33:00 pvcf_qc_fail STDERR + exit 2
-2022-03-16 20:33:00 pvcf_qc_fail STDERR [error] failure executing Task action 'run'
-2022-03-16 20:33:00 pvcf_qc_fail STDERR java.io.FileNotFoundException: /home/dnanexus/meta/stderr
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.util.FileUtils$.readFileBytes(FileUtils.scala:186)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.util.FileUtils$.readFileContent(FileUtils.scala:207)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.WorkerJobMeta.runJobScriptFunction(JobMeta.scala:985)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.TaskExecutor.apply(TaskExecutor.scala:991)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.BaseCli.dispatchCommand(BaseCli.scala:86)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dx.executor.BaseCli.main(BaseCli.scala:137)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp$.delayedEndpoint$dxExecutorWdl$MainApp$1(Main.scala:27)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp$delayedInit$body.apply(Main.scala:26)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.Function0.apply$mcV$sp(Function0.scala:39)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.Function0.apply$mcV$sp$(Function0.scala:39)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.runtime.AbstractFunction0.apply$mcV$sp(AbstractFunction0.scala:17)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.$anonfun$main$1(App.scala:76)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.$anonfun$main$1$adapted(App.scala:76)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.collection.IterableOnceOps.foreach(IterableOnce.scala:563)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.collection.IterableOnceOps.foreach$(IterableOnce.scala:561)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.collection.AbstractIterable.foreach(Iterable.scala:926)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.main(App.scala:76)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at scala.App.main$(App.scala:74)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp$.main(Main.scala:26)
-2022-03-16 20:33:00 pvcf_qc_fail STDERR 	at dxExecutorWdl.MainApp.main(Main.scala)
-
 ~~~
+- connecting to jobs via ssh
+~~~bashscript
+dx ssh job-G90QpvjJFqgxQ248ByX2GfF6
+~~~
+
 ### Generating Job submission script
 Step 6. Efficiently fetch the input file names from RAP
 ~~~bashscript
 $ dx find data --folder "/Bulk/Exome sequences_Previous exome releases/Population level exome OQFE variants, pVCF format - interim 200k release" --name "*.vcf.gz" --delim > inputfile.txt
+$ sort -k 4 -t$'\t' inputfile.txt > inputfile2.txt
+~~~
 
+Step 7. Create job submissions where each job processes N samples
+~~~bashscript
+~~~
