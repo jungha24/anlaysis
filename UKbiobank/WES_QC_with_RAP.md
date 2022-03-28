@@ -163,4 +163,11 @@ $ sort -k 4 -t$'\t' inputfile.txt > inputfile2.txt
 
 Step 7. Create job submissions where each job processes N samples
 ~~~bashscript
+python create_job_submission.py inputfile.txt 18 > submission_command.txt
+~~~
+
+~~~bashscript
+$ head -1 submission_command.txt
+dx run /pvcf_qc_fail -ipvcf=file-Fz7JgBQJ055qvYF24kKj9Yj5 -ipvcf=file-Fz7JgBQJZQVZxbjf3kbQkbJ6 -ipvcf=file-Fz7JgvQJp3PqbFp9P9vVkfJz -ipvcf=file-Fz7Jj10Jk6yvfp6kJ51Ff596 -ipvcf=file-Fz7JjkQJxq3y8bfX3q9QGq2X -ipvcf=file-Fz7Jjy8JYy0V8FZpP4ppqbKj -ipvcf=file-Fz7Jk40J598Y9z2k5zXxpZpy -ipvcf=file-Fz7Jk48J9jxV8FZpP4ppqbQ0 -ipvcf=file-Fz7Jk7QJ5J7kQGvYP9Kjp7x6 -ipvcf=file-Fz7Jk90JvGGPG7ZFPf4x4X16 -ipvcf=file-Fz7Jp3jJp3PX21zq6b1xzzJP -ipvcf=file-Fz7Jp8QJp1y5Q47X65F4F8B6 -ipvcf=file-Fz7JpxjJBx139z2k5zXxpb4p -ipvcf=file-Fz7JqF8J9jxqj4YF655Vx5Xg -ipvcf=file-Fz7Jx10Jp1yGJ71xBZ1qf9gj -ipvcf=file-Fz7JZJQJb74K3KP0B5Ygkp2f -ipvcf=file-Fz7JZP8J7G2KPY8b954zVx0f -ipvcf=file-Fz7JZV8J055fF0bQ95b57kGV  --folder="/pVCF_qc_process/0" --tag 200K_exome_exome_analysis --tag original --tag batch_n_0 --priority normal -y --brief
+$ head -1 submission_command.txt |sh
 ~~~
