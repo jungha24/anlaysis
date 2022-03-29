@@ -119,14 +119,14 @@ dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p Dockerfile --path Rett_202
 ~~~
 - to confrim the path
 ~~~bashscript
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$  docker run -v /home/dnanexus:/home/dnanexus -it --entrypoint /bin/bash pvcf_qc_fail:0.2
+dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$  docker run -v /home/dnanexus:/home/dnanexus -it --entrypoint /bin/bash pvcf_qc_fail:0.3
 ~~~
 Step 3. Creating an applet in WDL
 
 Step 4. Compile the WDL task using dxCompiler to a DNAnexus applet
 - install dxCompiler.jar (https://github.com/dnanexus/dxCompiler/releases)
 ~~~bashscript
- jeongha@jeonghas-MacBook-Pro $ java -jar /Users/jeongha/software/dxCompiler-2.9.1.jar compile /Users/jeongha/Dropbox/JH/2022/ukbiobank/pvcf_qc.wdl
+ jeongha@jeonghas-MacBook-Pro $ java -jar /Users/jeongha/software/dxCompiler-2.9.1.jar compile /Users/jeongha/Dropbox/JH/2022/ukbiobank/pvcf_qc_parallel.wdl
 [warning] Project is unspecified...using currently selected project project-G8gyxY0JFqgX5ZX33gk0yybx
 applet-G8jv5k8JFqgXB00Q5Z6KjfBF
 ~~~
@@ -134,8 +134,8 @@ applet-G8jv5k8JFqgXB00Q5Z6KjfBF
 
 Step 5. test for 1 input file
 ~~~bashscript
-dx run pvcf_qc_fail -h
-dx run pvcf_qc_fail -ipvcf=file-Fz7JVvjJ7G2Gfp6kJ51Ff492 /
+dx run pvcf_qc_fail_parallel -h
+dx run pvcf_qc_fail_parallel -ipvcf=file-Fz7JVvjJ7G2Gfp6kJ51Ff492 --folder="/pVCF_qc_process/" --tag 200K_exome_analysis --tag original --priority normal -y 
 ~~~
 - connecting to jobs via ssh
 ~~~bashscript
