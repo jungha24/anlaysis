@@ -107,15 +107,15 @@ OS version: Ubuntu 20.04.3 LTS (GNU/Linux 5.4.0-1066-aws x86_64)
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ mkdir docker
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ cd docker
 dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ vi Dockerfile
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker build -t pvcf_qc_fail:0.2 .
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker save pvcf_qc_fail:0.2| gzip -c > pvcf_qc_faill_0.2.tar.gz
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p pvcf_qc_faill_0.2.tar.gz --path Rett_20220315:/Docker/pvcf_qc_fail/pvcf_qc_fail_0.2.tar.gz
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p Dockerfile --path Rett_20220315:/Docker/pvcf_qc_fail/Dockerfile_for_0.2
+dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker build -t pvcf_qc_fail:0.3 .
+dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker save pvcf_qc_fail:0.3| gzip -c > pvcf_qc_faill_0.3.tar.gz
+dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p pvcf_qc_faill_0.3.tar.gz --path Rett_20220315:/Docker/pvcf_qc_fail/pvcf_qc_fail_0.3.tar.gz
+dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p Dockerfile --path Rett_20220315:/Docker/pvcf_qc_fail/Dockerfile_for_0.3
 
 
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker pull quay.io/biocontainers/picard:2.26.10--hdfd78af_0
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker save quay.io/biocontainers/picard:2.26.10--hdfd78af_0 | gzip -c > quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz
-dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz --path Rett_20220315:/Docker/quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz
+#dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker pull quay.io/biocontainers/picard:2.26.10--hdfd78af_0
+#dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ sudo docker save quay.io/biocontainers/picard:2.26.10--hdfd78af_0 | gzip -c > quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz
+#dnanexus@job-G8jgq4QJFqgVYbVb5fB75G41:~$ dx upload -p quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz --path Rett_20220315:/Docker/quay.io_biocontainers_picard_2.26.10--hdfd78af_0.tar.gz
 ~~~
 - to confrim the path
 ~~~bashscript
