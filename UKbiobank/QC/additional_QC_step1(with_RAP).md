@@ -1,5 +1,4 @@
-# additional QC of pVCF from 200K 
-## using RAP
+# additional QC of pVCF from 200K (using RAP)
 
 ## run single dx run with app 
 
