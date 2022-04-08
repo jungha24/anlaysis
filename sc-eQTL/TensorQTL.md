@@ -31,8 +31,4 @@ root@e0e452373402: for f in *.parquet; do python3 ../parquet2txt.py ${f}; done
 root@e0e452373402: python3 -m tensorqtl ../GT_processing/20220323_output/merged.m1.maf0.05.clump0.9.v2 ./phenotype_files/220324_COVID_CD4T_M1_v2.bed.gz output_220326/m1.maf0.05.clump0.9.cd4t --covariates covariate_files/m1_covariate.txt --cis_output output_220326/m1.maf0.05.clump0.9.cd4t.cis_qtl.txt.gz --mode cis_independent
 ~~~
 
-### find overlapping covid 19 hgi GWAS hit 
-~~~bashscript
-gunzip -c COVID19_HGI_B1_ALL_leave_23andme_20210607.txt.gz | awk '$9 < 0.00000005 {print $5}' - > covid19hgi.r6.b1_all_leave_23andme.sig.list.txt
 
-~~~
