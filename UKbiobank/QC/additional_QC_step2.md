@@ -18,5 +18,10 @@ plink --bfile ukb23155_cALL_b0_v2 --extract /home/mchoilab_dell/dell_drobo/proje
 /ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_cALL_b0_v3 --extract bed1 ../xgen_plus_spikein.GRCh38.edit2.bed --make-bed --out ukb23155_cALL_b0_v4
 # [2] leave only SNPs (I applied only SNP specific DP/AB cutoff in additional_QC_step1. So use only SNPs) + biallelic + ind/marker call rate > 95%
 /ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_cALL_b0_v4 --snps-only --max-alleles 2 --mind 0.05 --geno 0.05 --make-bed --out ukb23155_b0_v5
+# [3] sex discordant
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v5 --check-sex --out ukb23155_b0_v5
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v5 --keep-fam ukb23155_b0_v5.sexcheck.ok.txt --make-bed --out ukb23155_b0_v6
+# [4] relatedness
+/ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_cALL_b0_v5 --make-king-table --out ukb23155_cALL_b0_v5
 ~~~
 
