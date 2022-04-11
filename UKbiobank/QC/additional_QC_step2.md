@@ -22,6 +22,17 @@ plink --bfile ukb23155_cALL_b0_v2 --extract /home/mchoilab_dell/dell_drobo/proje
 /ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v5 --check-sex --out ukb23155_b0_v5
 /ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v5 --keep-fam ukb23155_b0_v5.sexcheck.ok.txt --make-bed --out ukb23155_b0_v6
 # [4] relatedness
-/ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_cALL_b0_v5 --make-king-table --out ukb23155_cALL_b0_v5
+/ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_b0_v6 --king-cutoff 0.0884 --out ukb23155_b0_v7
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v6 --remove-fam ukb23155_b0_v7.king.cutoff.out.id --make-bed --out ukb23155_b0_v7
+/ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_b0_v6 --king-cutoff 0.354 --out ukb23155_b0_v8
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v6 --remove-fam ukb23155_b0_v8.king.cutoff.out.id --make-bed --out ukb23155_b0_v8
+# [5] check concordance between genotype data and exome data
+for i in {1..22}; \
+  do /ssd-data/workspace/support/tool/plink-1.9/plink \
+  --bfile ukb22418_c${i}_b0_v2 \
+  --keep-fam /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis/ukb23155_b0_v7.fam \
+  --make-bed --out /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis/genotype_data/ukb22418_c${i}_b0_v3; done
+
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v7 --keep-allele-order --recode vcf bgz --out ./qc_intermediate_files/ukb23155_b0_v7
 ~~~
 
