@@ -27,12 +27,34 @@ plink --bfile ukb23155_cALL_b0_v2 --extract /home/mchoilab_dell/dell_drobo/proje
 /ssd-data/workspace/support/tool/plink2/plink2 --bfile ukb23155_b0_v6 --king-cutoff 0.354 --out ukb23155_b0_v8
 /ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v6 --remove-fam ukb23155_b0_v8.king.cutoff.out.id --make-bed --out ukb23155_b0_v8
 # [5] check concordance between genotype data and exome data
+## extract 200k fam samples from 500k genotype data
 for i in {1..22}; \
   do /ssd-data/workspace/support/tool/plink-1.9/plink \
   --bfile ukb22418_c${i}_b0_v2 \
   --keep-fam /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis/ukb23155_b0_v7.fam \
   --make-bed --out /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis/genotype_data/ukb22418_c${i}_b0_v3; done
+## convert plink to vcf
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v7 --keep-allele-order --recode vcf bgz --out ./genotype_data/ukb23155_b0_v7
+for i in {1..22}; do /ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb22418_c${i}_b0_v3 --keep-allele-order --recode vcf bgz --out ukb22418_c${i}_b0_v3; done
+ bcftools concat *_v3.vcf.gz -Oz -o ukb22418_cALL_b0_v3.vcf.gz
+## liftover hg19 genotype vcf to hg38 genotype vcf
+## (1) make reference dictionary
+java -jar /ssd-data/workspace/support/tool/picard_2.25.0/picard.jar CreateSequenceDictionary R=GRCh38_full_analysis_set_plus_decoy_hla.fa O=GRCh38_full_analysis_set_plus_decoy_hla.dict
+## (2) download chain in /ssd-data/workspace/support/annotation/liftover
+rsync -avzP rsync://hgdownload.cse.ucsc.edu/goldenPath/hg19/liftOver/hg19ToHg38.over.chain.gz .
+## (3) run liftover
+java -Xmx80g -jar /ssd-data/workspace/support/tool/picard_2.25.0/picard.jar LiftoverVcf \
+I=ukb22418_c22_b0_v3.vcf.gz \
+O=ukb22418_c22_b0_v3.hg38.vcf.gz \
+CHAIN=/ssd-data/workspace/support/annotation/liftover/hg19ToHg38.over.chain \
+REJECT=ukb22418_c22_b0_v3.hg38reject.vcf \
+R=../../reference/GRCh38_full_analysis_set_plus_decoy_hla.fa
 
-/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v7 --keep-allele-order --recode vcf bgz --out ./qc_intermediate_files/ukb23155_b0_v7
+# [6] ancestry stratification
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v7 --maf 0.01 --hwe 0.00001 --make-bed --out ukb23155_cALL_b0_v7.5
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_cALL_b0_v7.5 --keep-allele-order --recode vcf-iid bgz --out ukb23155_cALL_b0_v7.5
+bcftools annotate --rename-chrs chr_name_conv.txt ukb23155_cALL_b0_v7.5.vcf.gz -Oz -o ukb23155_cALL_b0_v7.5.reheader.vcf.gz
+bcftools isec -p ukb23155_v7.5_1000g -Oz 20220303_kova_kg_GSAarray.vcf.gz ukb23155_cALL_b0_v7.5.reheader.vcf.gz
+bcftools merge 0002.vcf.gz 0003.vcf.gz -Oz -o ukb23155_v7.5_1000g.vcf.gz
 ~~~
 
