@@ -65,6 +65,8 @@ crossmap_py2.7 ❯  CrossMap.py vcf GRCh37_to_GRCh38.edit.chain ukb22418_cALL_b0
 @ 2022-04-13 16:25:54: Updating contig field ...
 @ 2022-04-13 17:56:33: Total entries: 784256
 @ 2022-04-13 17:56:33: Failed to map: 99733
+## (4) measure concordance with snpsift (only uncompressed vcf as input)
+ java -Xmx100g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/SnpSift.jar concordance -v ukb23155_b0_v9.chr6.aa.vcf genotype_data/ukb22418_cALL_b0_v5.hg38.chr6.aa.vcf  > ./concordance/concordance.chr6.aa.txt &  java -Xmx100g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/SnpSift.jar concordance -v ukb23155_b0_v9.chr6.ab.vcf genotype_data/ukb22418_cALL_b0_v5.hg38.chr6.ab.vcf  > ./concordance/concordance.chr6.ab.txt &  java -Xmx100g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/SnpSift.jar concordance -v ukb23155_b0_v9.chr6.ac.vcf genotype_data/ukb22418_cALL_b0_v5.hg38.chr6.ac.vcf  > ./concordance/concordance.chr6.ac.txt &  java -Xmx100g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/SnpSift.jar concordance -v ukb23155_b0_v9.chr6.ad.vcf genotype_data/ukb22418_cALL_b0_v5.hg38.chr6.ad.vcf  > ./concordance/concordance.chr6.ad.txt &  java -Xmx100g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/SnpSift.jar concordance -v ukb23155_b0_v9.chr6.ae.vcf genotype_data/ukb22418_cALL_b0_v5.hg38.chr6.ae.vcf  > ./concordance/concordance.chr6.ae.txt
 ~~~
 - lifover using picard function -> GC head memory error
 ~~~bashscript
