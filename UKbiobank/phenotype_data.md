@@ -1,6 +1,7 @@
 ## download phenotype
 
-### 1. ubkunpack enc file
+### 1. ubkunpack/convert enc file
 ~~~bashscript
 ./ukbunpack ukb45036.enc k69079r45036.key
+./ukbconv ukb45879.enc_ukb txt
 ~~~
