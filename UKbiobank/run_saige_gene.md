@@ -200,5 +200,6 @@ step2_SPAtests.R \
         --groupFile=saige-gene/input/gabbr2_groupfile.txt    \
         --sparseSigmaFile=saige-gene/output/X25761.2.0_quantitative_cate.varianceRatio.txt_relatednessCutoff_0.125_2000_randomMarkersUsed.sparseSigma.mtx       \
         --IsSingleVarinGroupTest=TRUE \
-	--IsOutputBETASEinBurdenTest=TRUE
+	--IsOutputBETASEinBurdenTest=TRUE \
+	--LOCO=FALSE
 ~~~
