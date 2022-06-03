@@ -9,7 +9,7 @@
 * use docker 
 * generate docker-compose.yml and Dockerfile
 ~~~bashscript
-$ docker build  -t jhl-tensorqtl
+$ docker build -t jhl-tensorqtl .
 $ docker-compose up -d
 $ docker exec -it jhl-tensorqtl /bin/bash
 ~~~
