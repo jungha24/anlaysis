@@ -42,6 +42,19 @@ cat xaa 20220303_kova_kg_GSAarray.fam > xaa.2
 plink --vcf ukb23155_v7.6_1000g.vcf.gz --keep-fam xaa.2 --recode vcf-iid bgz --out ukb23155_v7.6_1000g.xaa.vcf.gz
 plink --vcf ukb23155_v7.6_1000g.xaa.vcf.gz --pca 10 --out ukb23155_v7.6_1000g.xaa
 
+# [6-1] use peddy
+## use common variants
+/plink-1.9/plink --bfile ukb23155_cALL_b0_v2 --maf 0.05 --make-bed --out ukb23155_cALL_b0_v3
+## use variants under missingness 10%
+/plink-1.9/plink --bfile ukb23155_cALL_b0_v3 --geno 0.1 --make-bed --out ukb23155_cALL_b0_v4
+## use prunned variants
+/plink-1.9/plink --bfile ukb23155_cALL_b0_v4 --indep-pairwise 500 10 0.2 --out ukb23155_cALL_b0_v5
+/plink-1.9/plink --bfile ukb23155_cALL_b0_v4 --extract ukb23155_cALL_b0_v5.prune.in --make-bed --out ukb23155_cALL_b0_v5
+## convert to vcf (required format of peddy)
+/plink-1.9/plink --bfile ukb23155_cALL_b0_v5 --recode vcf --out ukb23155_cALL_b0_v5
+bgzip -c ukb23155_cALL_b0_v5.vcf >ukb23155_cALL_b0_v5.vcf.gz
+tabix -p vcf ukb23155_cALL_b0_v5.vcf.gz
+
 # [5] check concordance between genotype data and exome data
 ## (1) extract 200k fam samples from 500k genotype data
 for i in {1..22}; \
