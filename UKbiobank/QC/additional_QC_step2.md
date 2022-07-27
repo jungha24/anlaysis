@@ -83,3 +83,8 @@ REJECT=ukb22418_c22_b0_v3.hg38reject.vcf \
 R=../../reference/GRCh38_full_analysis_set_plus_decoy_hla.fa  
 ~~~
 
+## additional marker QC
+- filter variants by hwe p value 1e-15
+~~~bashscript
+/ssd-data/workspace/support/tool/plink-1.9/plink --bfile ukb23155_b0_v9 --hwe 1e-15 --make-bed --out ukb23155_cALL_b0_v10
+~~~
