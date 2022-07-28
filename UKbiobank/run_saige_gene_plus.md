@@ -22,7 +22,7 @@ plink --bfile ukb23155_cALL_b0_v4 --indep-pairwise 500 10 0.2 --out ukb23155_cAL
 - phenotype file
   * for step1, 2
   * sample id, covariates (age, sex), phenotypes (delimited by \s)
-- variants of interast 
+- variants of interest 
 ~~~bashscript
 plink --bfile ../ukb23155_cALL_b0_v10 --extract range region.txt --make-bed --out ukb23155_cALL_b0_v10_adgrl2
 ~~~
