@@ -24,22 +24,25 @@ plink --bfile ../ukb23155_cALL_b0_v10 --extract ukb23155_cALL_b0_v10_prunned.pru
 plink --bfile ../ukb23155_cALL_b0_v10 --extract range region.txt --make-bed --out ukb23155_cALL_b0_v10_adgrl2
 ~~~
 - group file
- * 2 row for one gene
-  * geneA var rs1 rs2 rs3
-  * geneA anno missense missense lof
- * use annotated vcf with vep
+- groupfile
+  * 2 row for one gene
+  * use annotated vcf with vep
+~~~ 
+geneA var rs1 rs2 rs3
+geneA anno missense missense lof
+~~~
 
 3. step0. create a sparse GRM
 ~~~bashscript
 createSparseGRM.R --plinkFile=ukb23155_cALL_b0_v10_prune --nThreads=8 --outputPrefix=./output/sparseGRM --numRandomMarkerforSparseKin=2000 --relatednessCutoff=0.125
 ~~~
 - output file:
- * sparseGRM_relatednessCutoff_0.125_2000_randomMarkersUsed.sparseGRM.mtx
- * sparseGRM_relatednessCutoff_0.125_2000_randomMarkersUsed.sparseGRM.mtx.sampleIDs.txt
+  * sparseGRM_relatednessCutoff_0.125_2000_randomMarkersUsed.sparseGRM.mtx
+  * sparseGRM_relatednessCutoff_0.125_2000_randomMarkersUsed.sparseGRM.mtx.sampleIDs.txt
 
 4. step1. fitting the null logistic/linear mixed model
 - (optional) markers falling in 2 MAC categories (MAC>=20, 10<=MAC<20)
-* use as input of *--plinkfFile*
+  * use as input of *--plinkfFile*
 ~~~bashscript
 plink2 --bfile ../ukb23155_cALL_b0_v10 --freq counts --out ukb23155_cALL_b0_v10_count
 
@@ -54,7 +57,7 @@ plink --bfile ukb2315z5_cALL_b0_v10.forCate_vr --update-chr change_chr.txt --mak
 # only chromosome column changed. variant id column still has 'X'
 ~~~
 - run step1_fitNULLGLMM.R
-* using pre-selected markers falling in 2 MAC categories took less time.  
+  * using pre-selected markers falling in 2 MAC categories took less time.  
 ~~~bashscript
 # use markers falling in 2 MAC categories 
 step1_fitNULLGLMM.R \
@@ -87,8 +90,8 @@ step1_fitNULLGLMM.R \
 --IsOverwriteVarianceRatioFile=TRUE
 ~~~
 - output file:
- * binary_132466_sparseGRM.rda
- * binary_132466_sparseGRM.varianceRatio.txt
+  * binary_132466_sparseGRM.rda
+  * binary_132466_sparseGRM.varianceRatio.txt
 
 5. step2. performing the region- or gene-based association tests
 - error
