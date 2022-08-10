@@ -16,6 +16,10 @@ docker run -v /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/
 plink --bfile ../ukb23155_cALL_b0_v10 --indep-pairwise 500 10 0.2 --out ukb23155_cALL_b0_v10_prunned
 plink --bfile ../ukb23155_cALL_b0_v10 --extract ukb23155_cALL_b0_v10_prunned.prune.in --make-bed --out ukb23155_cALL_b0_v10_prune
 ~~~
+- covariate : first four PCs that were estimated using all samples with European ancestry
+~~~bashscript
+plink --bfile ukb23155_cALL_b0_v10_prune --pca 10 --out ukb23155_cALL_b0_v10_prune
+~~~
 - phenotype file
   * for step1, 2
   * sample id, covariates (age, sex), phenotypes (delimited by \s)
@@ -141,4 +145,11 @@ step2_SPAtests.R \
  --groupFile=group_20220802_mtr.txt \
  --annotation_in_groupTest=lof,missensem,synonymous,lof:missensem,lof:missensem:synonymous \
  --maxMAF_in_groupTest=0.00005,0.0001,0.0005,0.001,0.005,0.001
+~~~
+
+6. genome wide gene based association
+~~~bashscript
+for i in {1 ..23}; do plink --bfile ../ukb23155_b0_v10 --chr ${i} --make-bed --out ukb23155_b0_v10_chr${i}; done
+for i in {1..23}; do plink --bfile ukb23155_b0_v10_chr${i} --recode vcf-iid bgz --keep-allele-order --out ukb23155_b0_v10_chr${i}; done
+java -Xmx30g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/snpEff.jar GRCh38.86 ukb23155_b0_v10_chr1.vcf.gz > ukb23155_b0_v10_chr1.anno.vcf
 ~~~
