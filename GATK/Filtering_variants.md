@@ -92,4 +92,7 @@ bcftools merge ./kova2_1000g_covid/0002.vcf.gz ./kova2_1000g_covid/0003.vcf.gz -
   #Error: Multiple instances of '_' in sample ID. If you do not want '_' to be treated as a FID/IID delimiter, use --double-id or --const-fid to choose a different method of converting VCF sample IDs to PLINK IDs, or --id-delim to change the FID/IID delimiter.
 /ssd-data/workspace/support/tool/plink-1.9/plink --bfile 20220303_kova_kg_GSAarray_merged.qc3_3.chr --pca 10 --out 20220303_kova_kg_GSAarray_merged.qc3_3.chr
 ~~~
-
+[8] variant calling (annotation)
+~~~bashscript
+java -Xmx30g -jar /ssd-data/workspace/support/tool/snpEff_180608_v4.3t/snpEff/snpEff.jar -verbose GRCh38.86 merged.qc3_3.vcf.gz | bgzip -c > merged.qc3_3.snpeff.vcf.gz  
+~~~
