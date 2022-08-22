@@ -6,6 +6,9 @@ docker pull wzhou88/saige:1.1.3
 1. execute in pseudo-TTY
 ~~~bashscript
 docker run -v /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis:/data -it --user root --name saigegeneplus_jhl wzhou88/saige:1.1.3 /bin/bash
+# 
+docker start saigegeneplus_jhl
+docker exec -it saigegeneplus_jhl /bin/bash
 ~~~
 
 2. prepare input files
@@ -18,6 +21,7 @@ plink --bfile ../ukb23155_cALL_b0_v10 --extract ukb23155_cALL_b0_v10_prunned.pru
 ~~~
 - covariate : first four PCs that were estimated using all samples with European ancestry
 ~~~bashscript
+plink --bfile ukb23155_cALL_b0_v10_prune --maf 0.05 --geno 0.1 --make-bed --out ukb23155_cALL_b0_v10_prune_maf0.05_geno0.1
 plink --bfile ukb23155_cALL_b0_v10_prune --pca 10 --out ukb23155_cALL_b0_v10_prune
 ~~~
 - phenotype file
