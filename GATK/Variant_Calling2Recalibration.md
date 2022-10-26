@@ -46,7 +46,19 @@ do
     --reader-threads 10
 done
 ~~~
-
+- Add new samples to an existing genomicsdb workspace. Use *--genomicsdb-update-workspace-path*
+- In the incremental import case, no intervals are specified in the command because the tool will use the same intervals used in the initial import.
+- Sample map is also supported for incremental import.
+- It is recommended that users backup existing genomicsdb workspaces before adding new samples using --genomicsdb-update-workspace-path. If the tool fails during incremental import for any reason, the workspace may be in an inconsistent/corrupted state
+- information of new files is writed on "covid_wgs_gvcf_v2.sample_map"
+~~~bashscript
+/ssd-data/workspace/support/tool/gatk-4.2.0.0/gatk --java-options "-Xmx100g" GenomicsDBImport \
+	--sample-name-map ../covid_wgs_gvcf_v2.sample_map \
+	--genomicsdb-update-workspace-path gvcf_workspace_split_aa \
+	--tmp-dir ../temp \
+	--batch-size 500
+ ~~~
+ 
 #### 2. Joint-call cohort
 - run GenotypeGVCF for each genomicsdb workspace folder
 - running GenotypeGVCF tooks long, since GenomicsDB has to be loaded in memory ('https://gatk.broadinstitute.org/hc/en-us/community/posts/360063088471-Speeding-up-GenotypeGVCFS-GATK4')
