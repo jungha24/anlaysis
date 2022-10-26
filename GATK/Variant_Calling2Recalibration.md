@@ -46,7 +46,7 @@ do
     --reader-threads 10
 done
 ~~~
-- Add new samples to an existing genomicsdb workspace. Use *--genomicsdb-update-workspace-path*
+- Add new samples to an existing genomicsdb workspace. Use *--genomicsdb-update-workspace-path*.
 - In the incremental import case, no intervals are specified in the command because the tool will use the same intervals used in the initial import.
 - Sample map is also supported for incremental import.
 - It is recommended that users backup existing genomicsdb workspaces before adding new samples using --genomicsdb-update-workspace-path. If the tool fails during incremental import for any reason, the workspace may be in an inconsistent/corrupted state
