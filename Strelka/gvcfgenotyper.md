@@ -28,5 +28,10 @@ mv covid19_v2.strelka.variants.X.vcf.gz covid19_v2.strelka.variants.chrX.vcf.gz
 while IFS ="	" read -r chr start end
 do
 	echo -r ${chr}:${start}-${end} -f ../reference/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -l gvcfs.txt -Oz -o covid19_v2.strelka.variants.${chr}_${start}_${end}.vcf.gz
-done < interval_aa | xarg -i -P30 bash -c "gvcfgenotyper {}"#!/bin/bash
+done < interval_aa | xarg -i -P30 bash -c "gvcfgenotyper {}"
+
+while IFS ="	" read -r chr start end
+do
+	echo -r ${chr}:${start}-${end} -f ../reference/GCA_000001405.15_GRCh38_no_alt_plus_hs38d1_analysis_set.fna -l gvcfs.txt -Oz -o covid19_v2.strelka.variants.${chr}_${start}_${end}.vcf.gz
+done < interval_ab | xarg -i -P34 bash -c "gvcfgenotyper {}"
 ~~~
