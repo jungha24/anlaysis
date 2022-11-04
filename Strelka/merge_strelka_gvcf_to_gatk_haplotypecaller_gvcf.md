@@ -2,9 +2,8 @@
 - But GenotypeGVCF doesn't recognize strelka's gvcf in the workspace. 
 - As an alternative, 
   1. make multi-sample vcf with gvcfgenotyper (from Illumina) and do recalibration (from GATK4). - merge with gatk's variants at the very last step.
-      -  make multi-sample vcf ()
-      -  do recalibration with GATK4
-      ~~~bashscript
-      # generate index file of vcf
-      /ssd-data/workspace/support/tool/gatk-4.1.6.0/gatk IndexFeatureFile -I covid19_v2.strelka.variants.vcf.gz
-      ~~~
+      -  make multi-sample vcf (https://github.com/jungha24/anlaysis/blob/0074978b5afbb1834aff7041afa94a434661e8b6/Strelka/gvcfgenotyper.md)
+        -  loss FITER column information 
+      -  do recalibration with GATK4 
+        -  doesn't work
+     
