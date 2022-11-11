@@ -28,6 +28,9 @@
     wget variable-info/data-coding-ordinal-info-nov2019-update.txt .
     ~~~
     - <4> : directory where u want to the results to be stored
+    ~~~bashscript
+    mkdir results
+    ~~~
     - <5> : the colume name with participant ids in <1> input file. *"userId"* 
     - therefor ...
     ~~~bashscript
@@ -35,5 +38,5 @@
     cd /mnt/data/phesant/PHESANT-master/WAS
     raw_pheno_dir="/mnt/pheno/"
     Dir="/mnt/data/phesant/"
-    Rscript phenomeScan.r --phenofile="${raw_pheno_dir}field_of_interest_221109.headeredit.csv" --variablefile="${Dir}data/outcome-info_221110.tsv" --datacodingfile="${Dir}data/data-coding-ordinal-info-nov2019-update.txt" --resDir="${Dir}results/" --usrID="useID"
+    Rscript phenomeScan.r --phenofile="${raw_pheno_dir}field_of_interest_221109.headeredit.csv" --variablelistfile="${Dir}data/outcome-info_221110.tsv" --datacodingfile="${Dir}data/data-coding-ordinal-info-nov2019-update.txt" --resDir="${Dir}results/" --userId="userId"
     ~~~
