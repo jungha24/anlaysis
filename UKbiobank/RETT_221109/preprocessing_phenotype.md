@@ -31,7 +31,9 @@
     - <5> : the colume name with participant ids in <1> input file. *"userId"* 
     - therefor ...
     ~~~bashscript
-    raw_pheno_dir="/home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/phenotype/"
-    Dir="/home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis/20221107_rett/phesant/"
+    docker exec -it --user $(id -u):$(id -g) jhl_r /bin/bash
+    cd /mnt/data/phesant/PHESANT-master/WAS
+    raw_pheno_dir="/mnt/pheno/"
+    Dir="/mnt/data/phesant/"
     Rscript phenomeScan.r --phenofile="${raw_pheno_dir}field_of_interest_221109.headeredit.csv" --variablefile="${Dir}data/outcome-info_221110.tsv" --datacodingfile="${Dir}data/data-coding-ordinal-info-nov2019-update.txt" --resDir="${Dir}results/" --usrID="useID"
     ~~~
