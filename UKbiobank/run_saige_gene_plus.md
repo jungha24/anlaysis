@@ -5,7 +5,7 @@ docker pull wzhou88/saige:1.1.3
 ~~~
 1. execute in pseudo-TTY
 ~~~bashscript
-docker run -v /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis:/data -it --user root --name saigegeneplus_jhl wzhou88/saige:1.1.3 /bin/bash
+docker run -v /home/mchoilab_dell/dell_drobo/project_jhl/20210121_GABBR2_UKB_JH/20220403_analysis:/data -it --user $(id -u):$(id -g) --name saigegeneplus_jhl wzhou88/saige:1.1.3 /bin/bash
 # 
 docker start saigegeneplus_jhl
 docker exec -it saigegeneplus_jhl /bin/bash
