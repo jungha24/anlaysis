@@ -23,3 +23,5 @@
 --transcriptome=/ssd-data/workspace/support/tool/refdata-gex-GRCh38-2020-A \
 --localcores=16
 ~~~
+
+### 2. cellranger 
