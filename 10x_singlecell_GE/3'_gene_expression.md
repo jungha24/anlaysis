@@ -24,4 +24,3 @@
 --localcores=16
 ~~~
 
-### 2. cellranger 
