@@ -53,10 +53,11 @@ done
 - information of new files is writed on "covid_wgs_gvcf_v2.sample_map"
 ~~~bashscript
 /ssd-data/workspace/support/tool/gatk-4.2.0.0/gatk --java-options "-Xmx100g" GenomicsDBImport \
-	--sample-name-map ../covid_wgs_gvcf_v2.sample_map \
+	--sample-name-map ../20230213_2nd_project/covid19_2nd_project_wgs_gvcf.sample_map \
 	--genomicsdb-update-workspace-path gvcf_workspace_split_aa \
 	--tmp-dir ../temp \
-	--batch-size 500
+	--batch-size 500 \
+	--consolidate true
  ~~~
  
 #### 2. Joint-call cohort
