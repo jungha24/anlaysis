@@ -8,6 +8,7 @@
 * exclude: indel with AB > 0.8 or AB < 0.2
 * filtering: rm duplicates, biallelic-only, geno 0.05, maf 0.05, hwe p-val 1e-5
 * filter samples
+* 
 [1] left GATK VQSR PASS variants only
 ~~~bashscript
 bcftools view -f PASS snp.recalibrated.vcf.gz > merged.vqsr.vcf
